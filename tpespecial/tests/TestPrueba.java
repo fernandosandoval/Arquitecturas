@@ -28,7 +28,7 @@ public class TestPrueba extends TestCase {
 	public final void testGetNombre() throws IOException {
 		EntityManagerFactory emf = null;
 		EntityManager emanager = null;
-		String nombre = "Juan Perez";
+		String nombre = "Juan Pere";
 		int id = 1;
 		ArrayList<Usuario> ListaUsuarios = new ArrayList<Usuario>();{  
 			try {

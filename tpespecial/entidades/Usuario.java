@@ -144,13 +144,13 @@ public class Usuario implements Serializable {
 	}
 
 
-	public void setTemaConocido(Tema tema) {
+	public void addTemaConocido(Tema tema) {
 		if (!contieneTema(tema)){
 		    this.temasConocidos.add(tema);
 		    System.out.println("El autor ahora tiene conocimiento sobre el tema "+tema.getTexto());
 		}
 		else
-			System.out.println("El autor ya tenía conocimiento sobre el tema "+tema1);
+			System.out.println("El autor ya tenía conocimiento sobre el tema "+tema.getTexto());
 			
 	}
 	

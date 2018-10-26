@@ -8,13 +8,14 @@ import javax.persistence.EntityManager;
 
 import com.tudai.tpespecial.entidades.Paper;
 import com.tudai.tpespecial.entidades.Revision;
+import com.tudai.tpespecial.entidades.Tema;
 import com.tudai.tpespecial.entidades.Usuario;
 import com.tudai.tpespecial.servicios.OtrosServicios;
 
 
 public class ServiciosPrimeraEntrega {
 
-	  public static Usuario altaUsuario(String nombre, String lugarTrabajo, String titulo, int anoEgreso, Boolean esEvaluador, Boolean esAutor, Boolean esExperto, String tema1, String tema2, String tema3, EntityManager emanager) {
+	  public static Usuario altaUsuario(String nombre, String lugarTrabajo, String titulo, int anoEgreso, Boolean esEvaluador, Boolean esAutor, Boolean esExperto, EntityManager emanager) {
 	      emanager.getTransaction().begin();	
 	      Usuario usuario = new Usuario();
 	      usuario.setNombre(nombre);
@@ -24,10 +25,17 @@ public class ServiciosPrimeraEntrega {
 	      usuario.setEsAutor(esAutor);
 	      usuario.setEsEvaluador(esEvaluador);
 	      usuario.setEsExperto(esExperto);
-	      usuario.setTemasConocidos(tema1, tema2, tema3);
 	      emanager.persist(usuario);
 	      emanager.getTransaction().commit();
 	      return usuario;
+	  }
+	  
+	  public static void asignarConocimiento(Tema t, int idUsuario, EntityManager emanager) {
+		  Usuario usuario = emanager.find(Usuario.class, idUsuario);
+		  if (usuario!= null) {
+			  usuario.addTemaConocido(t);
+		  }
+		  
 	  }
 	  
 	  public static void bajaUsuario (int idUsuario, EntityManager emanager) {
@@ -111,14 +119,20 @@ public class ServiciosPrimeraEntrega {
 	      
 	  }
 	  
-	  public static void asignarPaperARevisor(int idPaper, int idUsuario, EntityManager emanager) {
+	  public static boolean asignarPaperARevisor(int idPaper, int idUsuario, EntityManager emanager) {
 		  	emanager.getTransaction().begin();
 		  	Usuario usuario = emanager.find(Usuario.class, idUsuario);
 			Paper paper = emanager.find(Paper.class, idPaper);
 			  if(usuario.getPapers().contains(paper)) {
 				    System.out.println("El usuario "+idUsuario+" es autor del paper "+idPaper+" y no puede ser revisor del mismo");
+                    return false;			  
 			  }
 			  else 
+				  if(usuario.getPapers().size() == 3) {
+					    System.out.println("El usuario "+idUsuario+" ya posee tres papers de su autoría");
+	                    return false;			  
+				  }
+				  else			  
 			      {
 						  if ((usuario!= null)&&(paper!=null)) {
 							  altaRevision("Está bastante bien", Calendar.getInstance(), paper, emanager);
@@ -127,8 +141,9 @@ public class ServiciosPrimeraEntrega {
 							  emanager.flush();
 						  }
 			      }	  
-	    	  emanager.getTransaction().commit();      
-		  }
+	    	  emanager.getTransaction().commit();
+	    	  return true;
+	  }
 	
 		  
 	  public static void getUsuariosPorPaper(int idPaper, EntityManager emanager) {
