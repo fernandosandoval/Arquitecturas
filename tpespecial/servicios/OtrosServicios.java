@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import com.tudai.tpespecial.entidades.Usuario;
 import com.tudai.tpespecial.entidades.Revision;
+import com.tudai.tpespecial.entidades.Tema;
 
 public class OtrosServicios {
 
@@ -46,5 +47,13 @@ public class OtrosServicios {
 	      List<Revision> resultados = query.getResultList();
 	      return resultados;
 	}
+	
+//	public static List<Tema> getTemasPorTrabajo(int idPaper, EntityManager emanager) {
+//		  String jpql = "SELECT temasTratados from Paper p WHERE idPaper = ?1";   
+//	      Query query = emanager.createQuery(jpql);  
+//	      query.setParameter("1", idPaper);
+//	      List<Tema> resultados = query.getResultList();
+//	      return resultados;
+//	}
 
 }

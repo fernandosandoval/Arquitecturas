@@ -30,12 +30,21 @@ public class ServiciosPrimeraEntrega {
 	      return usuario;
 	  }
 	  
-	  public static void asignarConocimiento(Tema t, int idUsuario, EntityManager emanager) {
+	  public static void asignarConocimiento(int idTema, int idUsuario, EntityManager emanager) {
+		  emanager.getTransaction().begin();
 		  Usuario usuario = emanager.find(Usuario.class, idUsuario);
-		  if (usuario!= null) {
-			  usuario.addTemaConocido(t);
+	      Tema tema = emanager.find(Tema.class, idTema);
+		  if ((usuario!= null)&&(tema!= null)) {
+			  if(usuario.addTemaConocido(tema)) {
+			      System.out.println("Este revisor ("+usuario.getNombre()+") ahora tiene conocimiento sobre el tema "+tema.getTexto());
+			      tema.addRevisor(usuario);
+			  }
+			  else {
+				  System.out.println("Este revisor ya tenía conocimiento sobre el tema "+tema.getTexto());
+			  }
+			  emanager.flush();
 		  }
-		  
+		  emanager.getTransaction().commit();
 	  }
 	  
 	  public static void bajaUsuario (int idUsuario, EntityManager emanager) {
@@ -106,6 +115,16 @@ public class ServiciosPrimeraEntrega {
 	      }
 	  }
 	  
+	  public static Tema altaTema (String texto, EntityManager emanager) {   
+	      emanager.getTransaction().begin();	
+	      Tema tema = new Tema(); 
+	      tema.setTexto(texto);
+	      emanager.persist(tema);
+	      emanager.getTransaction().commit();
+	      return tema;
+	  }
+      
+	  
 	  public static void asignarUsuarioAPaper(int idPaper, int idUsuario, EntityManager emanager) {
 		  emanager.getTransaction().begin();
 		  Usuario usuario = emanager.find(Usuario.class, idUsuario);
@@ -119,29 +138,31 @@ public class ServiciosPrimeraEntrega {
 	      
 	  }
 	  
-	  public static boolean asignarPaperARevisor(int idPaper, int idUsuario, EntityManager emanager) {
-		  	emanager.getTransaction().begin();
+	  public static boolean asignarPaperARevisor(int idPaper, int idUsuario, String texto, EntityManager emanager) {
+		//  	emanager.getTransaction().begin();
 		  	Usuario usuario = emanager.find(Usuario.class, idUsuario);
 			Paper paper = emanager.find(Paper.class, idPaper);
 			  if(usuario.getPapers().contains(paper)) {
-				    System.out.println("El usuario "+idUsuario+" es autor del paper "+idPaper+" y no puede ser revisor del mismo");
+				    System.out.println("El usuario "+usuario.getNombre()+" es autor del paper "+idPaper+" y no puede ser revisor del mismo");
                     return false;			  
 			  }
 			  else 
-				  if(usuario.getPapers().size() == 3) {
-					    System.out.println("El usuario "+idUsuario+" ya posee tres papers de su autoría");
+				  if(paper.getRevisiones().size() == 3) {
+					    System.out.println("El paper "+idPaper+" ya posee tres papers de su autoría");
 	                    return false;			  
 				  }
 				  else			  
 			      {
 						  if ((usuario!= null)&&(paper!=null)) {
-							  altaRevision("Está bastante bien", Calendar.getInstance(), paper, emanager);
-							  System.out.println("El usuario "+idUsuario+" ha sido asignado como revisor del paper "+idPaper);
+							  altaRevision(texto, Calendar.getInstance(), paper, emanager);
+							  System.out.println("El usuario "+usuario.getNombre()+" ha sido asignado como revisor del paper "+idPaper);
 							  System.out.println("El paper "+idPaper+ " tiene "+paper.getRevisiones().size()+" revisiones");
-							  emanager.flush();
+			//				  emanager.flush();
 						  }
-			      }	  
-	    	  emanager.getTransaction().commit();
+			      }	
+		//	  emanager.persist(idUsuario);
+		//	  emanager.persist(idPaper);
+	    //	  emanager.getTransaction().commit();
 	    	  return true;
 	  }
 	
@@ -155,6 +176,14 @@ public class ServiciosPrimeraEntrega {
 	      }
 	  }
 	  
+//	  public static List<Usuario> evaluadoresPorTrabajo (int idPaper, EntityManager emanager){
+//		  List<Usuario> res = new ArrayList<Usuario>();
+//		  List<Tema> temas = new ArrayList<Tema>();
+//		  temas = OtrosServicios.getTemasPorPaper(idPaper, emanager);
+//		  
+//		  return res;
+//	  }
+//	  
 	  public static void getDatosUsuario(int idUsuario, EntityManager emanager) {
 		  Usuario res = new Usuario();
 		  res = OtrosServicios.getUsuarioPorId(idUsuario, emanager);

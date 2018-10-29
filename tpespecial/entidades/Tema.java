@@ -1,5 +1,6 @@
 package com.tudai.tpespecial.entidades;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -27,13 +28,13 @@ public class Tema implements Serializable {
 		   @Column(nullable = false)
 		   private String texto;
 		   @ManyToMany
-		   private List<Paper> papers;
+		   private List<Paper> papers = new ArrayList<>();;
 		   @ManyToMany
-		   private List<Usuario> usuarios;
+		   private List<Usuario> usuarios = new ArrayList<>();
 
 		   
 		   public Tema() {
-			   
+			 
 		   }
 
 	    public Tema(String texto) {
@@ -44,10 +45,6 @@ public class Tema implements Serializable {
 			return idTema;
 		}
 
-		public void setIdTema(int idTema) {
-			this.idTema = idTema;
-		}
-
 		public String getTexto() {
 			return texto;
 		}
@@ -56,7 +53,11 @@ public class Tema implements Serializable {
 			this.texto = texto;
 		}
 
-        public void addTema(String texto) {
-        	
+        public void addRevisor(Usuario u) {
+            usuarios.add(u);
+        }
+        
+        public List<Usuario> getRevisores(){
+        	return usuarios;
         }
 }
