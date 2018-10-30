@@ -95,6 +95,21 @@ public class ServiciosPrimeraEntrega {
 	    	  emanager.getTransaction().commit();
 	      }
 	  }
+      
+      public static void asignarTemaAPaper(int idTema, int idPaper, EntityManager emanager) {
+		  emanager.getTransaction().begin();
+		  Paper paper = emanager.find(Paper.class, idPaper);
+	      Tema tema = emanager.find(Tema.class, idTema);
+		  if ((paper!= null)&&(tema!= null)) {
+			      System.out.println("El paper "+paper.getId()+" trata sobre el tema "+tema.getTexto());
+			      paper.addTemaTratado(tema);
+			  }
+			  else {
+				  System.out.println("Este paper ya trata sobre el tema "+tema.getTexto());
+			  }
+		  emanager.flush();
+		  emanager.getTransaction().commit();
+	  }
 	  
 	  
 	  private static Revision altaRevision(String texto, Calendar fecha, Paper paper, EntityManager emanager) {
@@ -125,55 +140,119 @@ public class ServiciosPrimeraEntrega {
 	  }
       
 	  
-	  public static void asignarUsuarioAPaper(int idPaper, int idUsuario, EntityManager emanager) {
-		  emanager.getTransaction().begin();
-		  Usuario usuario = emanager.find(Usuario.class, idUsuario);
-		  Paper paper = emanager.find(Paper.class, idPaper);
-		  if ((usuario!= null)&&(paper!=null)) {
-			  usuario.addPaper(paper);
-			  paper.addUsuario(usuario);
-			  emanager.flush();
-		  }	  
-    	  emanager.getTransaction().commit();
-	      
-	  }
+//	  public static void asignarUsuarioAPaper(int idPaper, int idUsuario, EntityManager emanager) {
+//		  emanager.getTransaction().begin();
+//		  Usuario usuario = emanager.find(Usuario.class, idUsuario);
+//		  Paper paper = emanager.find(Paper.class, idPaper);
+//		  if ((usuario!= null)&&(paper!=null)) {
+//			  usuario.addPaper(paper);
+//			  paper.addUsuario(usuario);
+//			  emanager.flush();
+//		  }	  
+//    	  emanager.getTransaction().commit();
+//	      
+//	  }
 	  
-	  public static boolean asignarPaperARevisor(int idPaper, int idUsuario, String texto, EntityManager emanager) {
-		//  	emanager.getTransaction().begin();
+	  public static boolean asignarPaperARevisor(int idPaper, int idUsuario, EntityManager emanager) {
+		  	
+		    emanager.getTransaction().begin();
+		    boolean encontrado = false;
 		  	Usuario usuario = emanager.find(Usuario.class, idUsuario);
 			Paper paper = emanager.find(Paper.class, idPaper);
-			  if(usuario.getPapers().contains(paper)) {
+			List<Tema> conoce = usuario.getTemasConocidos();
+			List<Tema> requiere = paper.getTemasTratados();
+			System.out.println("Intentando asignar paper de categoria "+paper.getCategoría());
+			for (Tema tema: requiere) {
+				System.out.println("Este paper requiere conocimiento en "+tema.getTexto());
+			}
+			if(usuario.getPapers().contains(paper)) {
 				    System.out.println("El usuario "+usuario.getNombre()+" es autor del paper "+idPaper+" y no puede ser revisor del mismo");
-                    return false;			  
+                    return encontrado;			  
 			  }
-			  else 
-				  if(paper.getRevisiones().size() == 3) {
-					    System.out.println("El paper "+idPaper+" ya posee tres papers de su autoría");
-	                    return false;			  
-				  }
-				  else			  
-			      {
-						  if ((usuario!= null)&&(paper!=null)) {
-							  altaRevision(texto, Calendar.getInstance(), paper, emanager);
-							  System.out.println("El usuario "+usuario.getNombre()+" ha sido asignado como revisor del paper "+idPaper);
-							  System.out.println("El paper "+idPaper+ " tiene "+paper.getRevisiones().size()+" revisiones");
-			//				  emanager.flush();
-						  }
-			      }	
-		//	  emanager.persist(idUsuario);
-		//	  emanager.persist(idPaper);
-	    //	  emanager.getTransaction().commit();
+			   
+			  //verifico si el evaluador posee el conocimiento para poder evaluar el paper
+			  //si el paper es poster, con uno solo alcanza
+			  if(paper.getCategoría()=="Poster") {
+			      for (Tema tema: requiere) {
+			  	       if (conoce.contains(tema)) {
+					      encontrado = true;
+					      System.out.println("Se ha encontrado el tema "+tema.getTexto()+" que es conocido por el evaluador. Como el paper es un poster, el conocimiento es suficiente");
+				       } 			  
+	              }
+			    if(!encontrado)
+			      return encontrado;	    
+			  }	  
+			  //si el paper no es poster, tiene que cumplir con cada uno de los temas que el evaluador conoce 
+			  encontrado = true;
+			  if(paper.getCategoría()!="Poster") {
+			      for (Tema tema: requiere) {
+			    	  System.out.println("Buscando el tema "+tema.getTexto());
+			  	       if (!conoce.contains(tema)) {
+			  	    	   encontrado = false;
+			  	    	 System.out.println("Se ha encontrado el tema "+tema.getTexto()+" que es no conocido por el evaluador. Como el paper es "+paper.getCategoría()+", el conocimiento minimo no cumple con los requisitos solicitados");
+				       } 			  
+	              }
+			      if(!encontrado)
+				      return encontrado;    
+			  }
+			  //si se llega hasta aqui es que cumple con las condiciones previas, por lo tanto agregamos el revisor a la lista de papers y viceversa
+			  usuario.addPaper(paper);
+			  paper.addUsuario(usuario);
+			  System.out.println("El revisor "+usuario.getNombre()+" cumple con los requisitos y se le ha asignado el paper "+paper.getId());
+			  emanager.flush();			  
+	    	  emanager.getTransaction().commit();
 	    	  return true;
 	  }
+
+
+//    if ((usuario!= null)&&(paper!=null)) {
+//	  altaRevision(texto, Calendar.getInstance(), paper, emanager);
+//	  System.out.println("El usuario "+usuario.getNombre()+" ha sido asignado como revisor del paper "+idPaper);
+//	  System.out.println("El paper "+idPaper+ " tiene "+paper.getRevisiones().size()+" revisiones");
+//				  emanager.flush();
+
+	  
+//	  public static boolean asignarPaperARevision(int idPaper, int idRevision, String texto, EntityManager emanager) {
+//			//  	emanager.getTransaction().begin();
+//			  	Revision Revision = emanager.find(Revision.class, idRevision);
+//				Paper paper = emanager.find(Paper.class, idPaper);
+//				  if(usuario.getPapers().contains(paper)) {
+//					    System.out.println("El usuario "+usuario.getNombre()+" es autor del paper "+idPaper+" y no puede ser revisor del mismo");
+//	                    return false;			  
+//				  }
+//				  else 
+//					  if(paper.getRevisiones().size() == 3) {
+//						    System.out.println("El paper "+idPaper+" ya posee tres papers de su autoría");
+//		                    return false;			  
+//					  }
+//					  else			  
+//				      {
+//							  if ((usuario!= null)&&(paper!=null)) {
+//								  altaRevision(texto, Calendar.getInstance(), paper, emanager);
+//								  System.out.println("El usuario "+usuario.getNombre()+" ha sido asignado como revisor del paper "+idPaper);
+//								  System.out.println("El paper "+idPaper+ " tiene "+paper.getRevisiones().size()+" revisiones");
+//				//				  emanager.flush();
+//							  }
+//				      }	
+//			//	  emanager.persist(idUsuario);
+//			//	  emanager.persist(idPaper);
+//		    //	  emanager.getTransaction().commit();
+//		    	  return true;
+//		  }
 	
 		  
 	  public static void getUsuariosPorPaper(int idPaper, EntityManager emanager) {
 		  List<Usuario> res = new ArrayList<>();
 		  res = OtrosServicios.buscarTodosLosUsuariosPorPaper(idPaper, emanager);
+		  if (res.size() == 0) {
+			  System.out.println("El paper "+idPaper+" no tiene autor asignado");
+		  }
+		  else {
 	      System.out.println("Los autores del paper "+idPaper+" son:");
 	      for (Usuario u: res) {
 	    	  System.out.println(u.getId());
-	      }
+	          }
+		  }
 	  }
 	  
 //	  public static List<Usuario> evaluadoresPorTrabajo (int idPaper, EntityManager emanager){

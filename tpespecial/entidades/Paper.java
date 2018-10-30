@@ -76,7 +76,7 @@ public class Paper implements Serializable {
 	public void addTemaTratado(Tema tema) {
 		if (!contieneTema(tema)){
 		    this.temasTratados.add(tema);
-		    System.out.println("El paper trata sobre el tema "+tema.getTexto());
+		  //  System.out.println("El paper trata sobre el tema "+tema.getTexto());
 		}
 		else
 			System.out.println("El paper ya trataba sobre el tema "+tema.getTexto());

@@ -42,13 +42,6 @@ public class Main {
 				ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Resumen", emanager));
 				ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Poster", emanager));
 				ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Articulo", emanager));
-				//asigno usuarios a papers
-				ServiciosPrimeraEntrega.asignarUsuarioAPaper(ListaPapers.get(0).getId(), ListaUsuarios.get(0).getId(), emanager);		
-				ServiciosPrimeraEntrega.asignarUsuarioAPaper(ListaPapers.get(0).getId(), ListaUsuarios.get(1).getId(), emanager);
-				ServiciosPrimeraEntrega.asignarUsuarioAPaper(ListaPapers.get(1).getId(), ListaUsuarios.get(2).getId(), emanager);		
-				ServiciosPrimeraEntrega.asignarUsuarioAPaper(ListaPapers.get(1).getId(), ListaUsuarios.get(3).getId(), emanager);
-				ServiciosPrimeraEntrega.asignarUsuarioAPaper(ListaPapers.get(2).getId(), ListaUsuarios.get(4).getId(), emanager);		
-				ServiciosPrimeraEntrega.asignarUsuarioAPaper(ListaPapers.get(2).getId(), ListaUsuarios.get(5).getId(), emanager);
 				//creo temas
 				ServiciosPrimeraEntrega.altaTema("Algoritmos", emanager);
 				ServiciosPrimeraEntrega.altaTema("Lenguajes", emanager);
@@ -60,14 +53,7 @@ public class Main {
 				ServiciosPrimeraEntrega.altaTema("Visualización", emanager);
 				ServiciosPrimeraEntrega.altaTema("Redes", emanager);
 				ServiciosPrimeraEntrega.altaTema("Metodologías", emanager);
-				//asigno revisor a paper y creo revisiones
-				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(2).getId(), ListaUsuarios.get(4).getId(), "Está bastante bien", emanager);
-				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(2).getId(), ListaUsuarios.get(5).getId(), "Muy bien", emanager);
-				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(2).getId(), ListaUsuarios.get(0).getId(), "Prolijo y comprensible", emanager);
-				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(2).getId(), ListaUsuarios.get(1).getId(), "Excelente", emanager);
-				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(2).getId(), ListaUsuarios.get(2).getId(), "Muy bueno", emanager);
-				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(2).getId(), ListaUsuarios.get(3).getId(), "Muy largo", emanager);
-				//asigno temas a revisores
+				//asigno conocimiento de temas a revisores
 				ServiciosPrimeraEntrega.asignarConocimiento(21, 1, emanager);
 				ServiciosPrimeraEntrega.asignarConocimiento(22, 1, emanager);
 				ServiciosPrimeraEntrega.asignarConocimiento(23, 1, emanager);
@@ -76,6 +62,22 @@ public class Main {
 				ServiciosPrimeraEntrega.asignarConocimiento(24, 2, emanager);
 				ServiciosPrimeraEntrega.asignarConocimiento(25, 2, emanager);
 				ServiciosPrimeraEntrega.asignarConocimiento(26, 2, emanager);
+			    ServiciosPrimeraEntrega.asignarTemaAPaper(21, 11, emanager);
+			    ServiciosPrimeraEntrega.asignarTemaAPaper(22, 11, emanager);
+			    ServiciosPrimeraEntrega.asignarTemaAPaper(23, 11, emanager);
+				//asigno papers a usuarios revisores
+				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(0).getId(), ListaUsuarios.get(0).getId(), emanager);		
+//				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(0).getId(), ListaUsuarios.get(1).getId(), emanager);
+//				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(1).getId(), ListaUsuarios.get(2).getId(), emanager);		
+//				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(1).getId(), ListaUsuarios.get(3).getId(), emanager);
+//				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(2).getId(), ListaUsuarios.get(4).getId(), emanager);		
+//				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(2).getId(), ListaUsuarios.get(5).getId(), emanager);
+//				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(2).getId(), ListaUsuarios.get(4).getId(), emanager);
+//				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(2).getId(), ListaUsuarios.get(5).getId(), emanager);
+//				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(2).getId(), ListaUsuarios.get(0).getId(), emanager);
+//				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(2).getId(), ListaUsuarios.get(1).getId(), emanager);
+//				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(2).getId(), ListaUsuarios.get(2).getId(), emanager);
+//				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(2).getId(), ListaUsuarios.get(3).getId(), emanager);	
 				//busco usuarios por paper
 				ServiciosPrimeraEntrega.getUsuariosPorPaper(12, emanager);
 				//busco datos completos del usuario
