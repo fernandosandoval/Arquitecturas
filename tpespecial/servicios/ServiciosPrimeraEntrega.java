@@ -186,7 +186,7 @@ public class ServiciosPrimeraEntrega {
 			  encontrado = true;
 			  if(paper.getCategoría()!="Poster") {
 			      for (Tema tema: requiere) {
-			    	  System.out.println("Buscando el tema "+tema.getTexto());
+			    	  System.out.println("Buscando en la lista de conocimientos del revisor "+usuario.getNombre()+ " el tema "+tema.getTexto());
 			  	       if (!conoce.contains(tema)) {
 			  	    	   encontrado = false;
 			  	    	 System.out.println("Se ha encontrado el tema "+tema.getTexto()+" que es no conocido por el evaluador. Como el paper es "+paper.getCategoría()+", el conocimiento minimo no cumple con los requisitos solicitados");
@@ -202,6 +202,59 @@ public class ServiciosPrimeraEntrega {
 			  emanager.flush();			  
 	    	  emanager.getTransaction().commit();
 	    	  return true;
+	  }
+	  
+	  public static void verificarPosiblesEvaluadores(int idPaper, EntityManager emanager) {
+		      boolean valido = false;
+		      List <Usuario> resultado = new ArrayList<>();
+		      Paper paper = emanager.find(Paper.class, idPaper);
+		      List<Tema> conoce = new ArrayList<>();
+		      List<Tema> requiere = paper.getTemasTratados();
+		      System.out.println("Buscando posibles evaluadores que conozcan sobre los temas:");
+		      for (Tema tema: requiere) {
+		    	  System.out.println(tema.getTexto());
+		      }
+		      List<Usuario> usuarios = OtrosServicios.buscarTodosLosUsuarios(emanager);
+		      // tenemos a todos los evaluadores, ahora por cada uno verificamos si su lista de temas conocidos satisface al paper
+		      for (Usuario usuario: usuarios) {
+		    	   conoce = usuario.getTemasConocidos();
+		    	   if(usuario.getPapers().contains(paper)) {
+					    System.out.println("El usuario "+usuario.getNombre()+" es autor del paper "+idPaper+" y no puede ser revisor del mismo");
+	                    valido = false;			  
+				  }
+				   
+				  //verifico si el evaluador posee el conocimiento para poder evaluar el paper
+				  //si el paper es poster, con uno solo alcanza
+				  if(paper.getCategoría()=="Poster") {
+				      for (Tema tema: requiere) {
+				  	       if (conoce.contains(tema)) {
+						      valido = true;
+						      System.out.println("Se ha encontrado el tema "+tema.getTexto()+" que es conocido por el evaluador. Como el paper es un poster, el conocimiento es suficiente");
+					       } 			  
+		              }
+				    if(valido)
+				      resultado.add(usuario);	    
+				  }	  
+				  //si el paper no es poster, tiene que cumplir con cada uno de los temas que el evaluador conoce 
+				  valido = true;
+				  if(paper.getCategoría()!="Poster") {
+				      for (Tema tema: requiere) {
+				    	  System.out.println("Buscando en la lista de conocimientos del revisor "+usuario.getNombre()+ " el tema "+tema.getTexto());
+				  	       if (!conoce.contains(tema)) {
+				  	    	   valido = false;
+				  	    	 System.out.println("Se ha encontrado el tema "+tema.getTexto()+" que es no conocido por el evaluador. Como el paper es "+paper.getCategoría()+", el conocimiento minimo no cumple con los requisitos solicitados");
+					       } 			  
+		              }
+				      if(valido)
+					      resultado.add(usuario);    
+				  }
+  
+		      }	  // aqui termina el foreach de usuarios 
+		  // muestro la lista de usuarios resultante
+		  System.out.println("Los usuarios que pueden asignarse al paper "+paper.getId()+" son:");    
+		  for (Usuario usuario : resultado) {
+			  System.out.println(usuario.getNombre());
+		  }
 	  }
 
 
@@ -241,7 +294,7 @@ public class ServiciosPrimeraEntrega {
 //		  }
 	
 		  
-	  public static void getUsuariosPorPaper(int idPaper, EntityManager emanager) {
+	  public static void getAutoresPorPaper(int idPaper, EntityManager emanager) {
 		  List<Usuario> res = new ArrayList<>();
 		  res = OtrosServicios.buscarTodosLosUsuariosPorPaper(idPaper, emanager);
 		  if (res.size() == 0) {

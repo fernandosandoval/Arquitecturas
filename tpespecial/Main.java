@@ -79,9 +79,11 @@ public class Main {
 //				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(2).getId(), ListaUsuarios.get(2).getId(), emanager);
 //				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(2).getId(), ListaUsuarios.get(3).getId(), emanager);	
 				//busco usuarios por paper
-				ServiciosPrimeraEntrega.getUsuariosPorPaper(12, emanager);
+				ServiciosPrimeraEntrega.getAutoresPorPaper(12, emanager);
 				//busco datos completos del usuario
 				ServiciosPrimeraEntrega.getDatosUsuario(1, emanager);
+				//busco posibles evaluadores por paper
+				ServiciosPrimeraEntrega.verificarPosiblesEvaluadores(11, emanager);
 				
 			}					
 			catch (Exception e) {
