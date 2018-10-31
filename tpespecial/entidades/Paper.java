@@ -93,10 +93,11 @@ public class Paper implements Serializable {
 		return false;
 	}
 
-
 	public void addUsuario (Usuario u) {
 		this.usuarios.add(u);
 	}
-	
-	
+   	
+	public List<Usuario> getUsuarios(){
+		return this.usuarios;
+	}
 }

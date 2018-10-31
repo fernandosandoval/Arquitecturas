@@ -5,6 +5,7 @@ import javax.persistence.Query;
 import com.tudai.tpespecial.entidades.Usuario;
 import com.tudai.tpespecial.entidades.Revision;
 import com.tudai.tpespecial.entidades.Tema;
+import com.tudai.tpespecial.entidades.Paper;
 
 public class OtrosServicios {
 
@@ -13,6 +14,13 @@ public class OtrosServicios {
           Query query = emanager.createQuery(jpql);
           List<Usuario> resultados = query.getResultList();
           return resultados;
+	}
+	
+	public static List<Paper> buscarTodosLosPapers(EntityManager emanager){
+        String jpql = "SELECT p FROM Paper p";
+        Query query = emanager.createQuery(jpql);
+        List<Paper> resultados = query.getResultList();
+        return resultados;
 	}
 	
 	public static List<Usuario> buscarTodosLosUsuariosPorPaper(int idPaper, EntityManager emanager){

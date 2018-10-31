@@ -43,8 +43,8 @@ public class Usuario implements Serializable {
 	   private List<Tema> temasConocidos = new ArrayList<>();
 	   @Column(nullable = false)
 	   private boolean esExperto;
-	   @OneToMany(mappedBy="usuario", targetEntity = Revision.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-       private List<Revision> trabajosAsignados;
+	   @OneToMany(mappedBy="usuario", targetEntity = Paper.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+       private List<Paper> trabajosAsignados;
 	   @OneToMany(mappedBy="usuario", targetEntity = Revision.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
        private List<Revision> revisiones;
 	   
@@ -101,12 +101,12 @@ public class Usuario implements Serializable {
 		return papers;
 	}
 	
-	public List<Revision> getTrabajosAsignados() {
+	public List<Paper> getTrabajosAsignados() {
 		return trabajosAsignados;
 	}
 	
-	public void addTrabajoAsignado(Revision r) {
-		this.trabajosAsignados.add(r);
+	public void addTrabajoAsignado(Paper p) {
+		this.trabajosAsignados.add(p);
 	}
 
 

@@ -84,7 +84,8 @@ public class Main {
 				ServiciosPrimeraEntrega.getDatosUsuario(1, emanager);
 				//busco posibles evaluadores por paper
 				ServiciosPrimeraEntrega.verificarPosiblesEvaluadores(11, emanager);
-				
+				//busco posibles papers por evaluador
+				ServiciosPrimeraEntrega.verificarPosiblesPapers(1, emanager);
 			}					
 			catch (Exception e) {
 				e.printStackTrace();
