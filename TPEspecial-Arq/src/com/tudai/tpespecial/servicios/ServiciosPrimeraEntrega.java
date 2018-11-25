@@ -11,23 +11,15 @@ import com.tudai.tpespecial.entidades.Paper;
 import com.tudai.tpespecial.entidades.Revision;
 import com.tudai.tpespecial.entidades.Tema;
 import com.tudai.tpespecial.entidades.Usuario;
-import com.tudai.tpespecial.servicios.OtrosServicios;
+import com.tudai.tpespecial.servicios.*;
 
 
 public class ServiciosPrimeraEntrega {
 
 	  public static Usuario altaUsuario(String nombre, String lugarTrabajo, String titulo, int anoEgreso, Boolean esEvaluador, Boolean esAutor, Boolean esExperto, EntityManager emanager) {
-	      emanager.getTransaction().begin();	
-	      Usuario usuario = new Usuario();
-	      usuario.setNombre(nombre);
-	      usuario.setLugarTrabajo(lugarTrabajo);
-	      usuario.setTitulo(titulo);
-	      usuario.setAnoEgreso(anoEgreso);
-	      usuario.setEsAutor(esAutor);
-	      usuario.setEsEvaluador(esEvaluador);
-	      usuario.setEsExperto(esExperto);
-	      emanager.persist(usuario);
-	      emanager.getTransaction().commit();
+	      UsuarioDAO u = new UsuarioDAO();	
+	      Usuario usuario = new Usuario(nombre, lugarTrabajo, titulo, anoEgreso, esEvaluador, esAutor, esExperto);
+	      u.persist(usuario);
 	      return usuario;
 	  }
 	  
@@ -48,19 +40,14 @@ public class ServiciosPrimeraEntrega {
 		  emanager.getTransaction().commit();
 	  }
 	  
-	  public static void bajaUsuario (int idUsuario, EntityManager emanager) {
-		  Usuario usuario = emanager.find(Usuario.class, idUsuario);
-	      if (usuario!= null) {
-	    	  emanager.getTransaction().begin();
-	    	  emanager.remove(usuario);
-	    	  emanager.getTransaction().commit();
-	      }
+	  public static void bajaUsuario (int idUsuario) {
+		  UsuarioDAO usuario = new UsuarioDAO();
+		  usuario.delete(idUsuario);
 	  }
 	  
 	  public static Usuario modificacionUsuario (int idUsuario, String nombre, String lugarTrabajo, String titulo, int anoEgreso, Boolean esEvaluador, Boolean esAutor, Boolean esExperto, EntityManager emanager) {  
 	      Usuario usuario = emanager.find(Usuario.class, idUsuario);
 	      if (usuario!= null) {
-	    	  emanager.getTransaction().begin();
 	    	  usuario.setNombre(nombre);
 		      usuario.setLugarTrabajo(lugarTrabajo);
 		      usuario.setTitulo(titulo);
@@ -68,8 +55,8 @@ public class ServiciosPrimeraEntrega {
 		      usuario.setEsAutor(esAutor);
 		      usuario.setEsEvaluador(esEvaluador);
 		      usuario.setEsExperto(esExperto);
-		      emanager.flush();
-	    	  emanager.getTransaction().commit();
+		     UsuarioDAO u = new UsuarioDAO();
+		     u.update(idUsuario, usuario);
 	      }
 	      return usuario;
 	  }
@@ -131,12 +118,14 @@ public class ServiciosPrimeraEntrega {
 	      }
 	  }
 	  
-	  public static Tema altaTema (String texto, EntityManager emanager) {   
+	  public static Tema altaTema (String texto) {  
+		  EntityManager emanager = EMF.createEntityManager();
 	      emanager.getTransaction().begin();	
 	      Tema tema = new Tema(); 
 	      tema.setTexto(texto);
 	      emanager.persist(tema);
 	      emanager.getTransaction().commit();
+	      emanager.close();
 	      return tema;
 	  }
       
@@ -146,8 +135,8 @@ public class ServiciosPrimeraEntrega {
 		  Usuario usuario = emanager.find(Usuario.class, idUsuario);
 		  Paper paper = emanager.find(Paper.class, idPaper);
 		  if ((usuario!= null)&&(paper!=null)) {
-			  usuario.addPaper(paper);
-			  paper.addAutor(usuario);
+			//  usuario.addPaper(paper);
+			//  paper.addAutor(usuario);
 			  System.out.println("Se ha asignado el paper "+paper.getId()+" al autor "+usuario.getNombre());
 			  emanager.flush();
 		  }	  
@@ -198,10 +187,10 @@ public class ServiciosPrimeraEntrega {
 				      return encontrado;    
 			  }
 			  //si se llega hasta aqui es que cumple con las condiciones previas, por lo tanto agregamos el revisor a la lista de papers y viceversa
-			  usuario.addTrabajoAsignado(paper);
-			 // paper.addUsuario(usuario);
+			 // usuario.addTrabajoAsignado(paper);
+			  paper.addRevisor(usuario);
 			  System.out.println("El revisor "+usuario.getNombre()+" cumple con los requisitos y se le ha asignado el paper "+paper.getId());
-			  emanager.flush();			  
+			  //emanager.flush();			  
 	    	  emanager.getTransaction().commit();
 	    	  return true;
 	  }
@@ -350,9 +339,9 @@ public class ServiciosPrimeraEntrega {
 	  
 	  
 	  
-	  public static void getDatosUsuario(int idUsuario, EntityManager emanager) {
+	  public static void getDatosUsuario(int idUsuario) {
 		  Usuario res = new Usuario();
-		  res = OtrosServicios.getUsuarioPorId(idUsuario, emanager);
+		  res = UsuarioREST.getUsuarioPorId(idUsuario);
 		  System.out.println("Los datos del usuario con id "+idUsuario+" son:");
 		  System.out.println("Nombre: "+res.getNombre());
 		  System.out.println("Trabaja en: "+res.getLugarTrabajo());

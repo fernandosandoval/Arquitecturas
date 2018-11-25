@@ -27,16 +27,32 @@ public class Paper implements Serializable {
 	
 	private static final long serialVersionUID = 6055541870591892776L;
 	   @Id
-	   @GeneratedValue(strategy = GenerationType.AUTO)
-	   @Column
+	   @GeneratedValue(strategy = GenerationType.IDENTITY)
+	   @Column (nullable = false)
 	   private int idPaper;
 	   @Column(nullable = false)
 	   private String categoría;
        @ManyToMany(mappedBy="papers")	 
 	   private List<Tema> temasTratados = new ArrayList<>();
-	   @ManyToMany
+       @ManyToMany(cascade = { 
+			    CascadeType.PERSIST, 
+			    CascadeType.MERGE
+			})
+	   @JoinTable(name = "TABLA_PAPERS_TABLA_USUARIOS",
+	              joinColumns = @JoinColumn(name = "idPaper", referencedColumnName = "idPaper"),
+	              inverseJoinColumns = @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario"))
+	   @Column
+	   @ElementCollection(targetClass=Usuario.class)
 	   private List<Usuario> autores = new ArrayList<>();
-	   @ManyToMany
+	   @ManyToMany(cascade = { 
+			    CascadeType.PERSIST, 
+			    CascadeType.MERGE
+			})
+	   @JoinTable(name = "TABLA_PAPERS_TABLA_USUARIOS",
+	              joinColumns = @JoinColumn(name = "idPaper", referencedColumnName = "idPaper"),
+	              inverseJoinColumns = @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario"))
+	   @Column
+	   @ElementCollection(targetClass=Usuario.class)
 	   private List<Usuario> revisores = new ArrayList<>();
 	   @OneToMany(mappedBy="paper" , targetEntity = Revision.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
        private List<Revision> revisiones = new ArrayList<>();

@@ -8,10 +8,13 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -43,17 +46,35 @@ public class Usuario implements Serializable {
 	   private List<Tema> temasConocidos = new ArrayList<>();
 	   @Column(nullable = false)
 	   private boolean esExperto;
-	   @ManyToMany(mappedBy="revisores")
+	   @ManyToMany(cascade = { 
+			    CascadeType.PERSIST, 
+			    CascadeType.MERGE
+			})
+	   @JoinTable(name = "TABLA_PAPERS_TABLA_USUARIOS",
+	              joinColumns = @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario"),
+	              inverseJoinColumns = @JoinColumn(name = "idPaper", referencedColumnName = "idPaper"))
+	   @Column
+	   @ElementCollection(targetClass=Paper.class)
 	   private List<Paper> trabajosAsignados = new ArrayList<>();
 	   @OneToMany(mappedBy="usuario", targetEntity = Revision.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
        private List<Revision> revisiones;
 	   
 
-       public Usuario() {
-
+       public Usuario(String _nombre, String _lugarTrabajo, String _titulo, int _anoEgreso, Boolean _esEvaluador, Boolean _esAutor, Boolean _esExperto) {
+    	   nombre = _nombre;
+    	   lugarTrabajo = _lugarTrabajo;
+    	   titulo = _titulo;
+    	   anoEgreso = _anoEgreso;
+    	   esEvaluador = _esEvaluador;
+    	   esAutor = _esAutor;
+    	   esExperto = _esExperto;
        }
 
-    public int getId() {
+    public Usuario() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public int getId() {
     	return idUsuario;
     }
 

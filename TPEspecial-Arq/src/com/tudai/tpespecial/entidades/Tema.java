@@ -22,7 +22,7 @@ public class Tema implements Serializable {
 
        	   private static final long serialVersionUID = -5753790977490549983L;
 	       @Id
-	       @GeneratedValue(strategy = GenerationType.AUTO)
+	       @GeneratedValue(strategy = GenerationType.IDENTITY)
 	       @Column
 	       private int idTema;
 		   @Column(nullable = false)

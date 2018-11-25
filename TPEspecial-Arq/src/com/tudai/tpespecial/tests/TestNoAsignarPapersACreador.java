@@ -58,12 +58,12 @@ public class TestNoAsignarPapersACreador extends TestCase {
 			ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Resumen", emanager));
 			ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Poster", emanager));
 			ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Articulo", emanager));
-			ServiciosPrimeraEntrega.asignarUsuarioAPaper(ListaPapers.get(0).getId(), ListaUsuarios.get(0).getId(), emanager);		
-			ServiciosPrimeraEntrega.asignarUsuarioAPaper(ListaPapers.get(0).getId(), ListaUsuarios.get(1).getId(), emanager);
-			ServiciosPrimeraEntrega.asignarUsuarioAPaper(ListaPapers.get(1).getId(), ListaUsuarios.get(2).getId(), emanager);		
-			ServiciosPrimeraEntrega.asignarUsuarioAPaper(ListaPapers.get(1).getId(), ListaUsuarios.get(3).getId(), emanager);
-			ServiciosPrimeraEntrega.asignarUsuarioAPaper(ListaPapers.get(2).getId(), ListaUsuarios.get(4).getId(), emanager);		
-			ServiciosPrimeraEntrega.asignarUsuarioAPaper(ListaPapers.get(2).getId(), ListaUsuarios.get(5).getId(), emanager);
+			ServiciosPrimeraEntrega.asignarAutorAPaper(ListaPapers.get(0).getId(), ListaUsuarios.get(0).getId(), emanager);		
+			ServiciosPrimeraEntrega.asignarAutorAPaper(ListaPapers.get(0).getId(), ListaUsuarios.get(1).getId(), emanager);
+			ServiciosPrimeraEntrega.asignarAutorAPaper(ListaPapers.get(1).getId(), ListaUsuarios.get(2).getId(), emanager);		
+			ServiciosPrimeraEntrega.asignarAutorAPaper(ListaPapers.get(1).getId(), ListaUsuarios.get(3).getId(), emanager);
+			ServiciosPrimeraEntrega.asignarAutorAPaper(ListaPapers.get(2).getId(), ListaUsuarios.get(4).getId(), emanager);		
+			ServiciosPrimeraEntrega.asignarAutorAPaper(ListaPapers.get(2).getId(), ListaUsuarios.get(5).getId(), emanager);
 	
 
 			assertTrue(ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(0).getId(), ListaUsuarios.get(0).getId(),emanager)); 

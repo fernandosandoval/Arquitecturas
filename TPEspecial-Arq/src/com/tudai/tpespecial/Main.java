@@ -43,34 +43,36 @@ public class Main {
 				ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Poster", emanager));
 				ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Articulo", emanager));
 				//creo temas
-				ServiciosPrimeraEntrega.altaTema("Algoritmos", emanager);
-				ServiciosPrimeraEntrega.altaTema("Lenguajes", emanager);
-				ServiciosPrimeraEntrega.altaTema("Bases de Datos", emanager);
-				ServiciosPrimeraEntrega.altaTema("Algebra", emanager);
-				ServiciosPrimeraEntrega.altaTema("Java", emanager);
-				ServiciosPrimeraEntrega.altaTema("Objetos", emanager);
-				ServiciosPrimeraEntrega.altaTema("Agentes", emanager);
-				ServiciosPrimeraEntrega.altaTema("Visualización", emanager);
-				ServiciosPrimeraEntrega.altaTema("Redes", emanager);
-				ServiciosPrimeraEntrega.altaTema("Metodologías", emanager);
+				ServiciosPrimeraEntrega.altaTema("Algoritmos");
+				ServiciosPrimeraEntrega.altaTema("Lenguajes");
+				ServiciosPrimeraEntrega.altaTema("Bases de Datos");
+				ServiciosPrimeraEntrega.altaTema("Algebra");
+				ServiciosPrimeraEntrega.altaTema("Java");
+				ServiciosPrimeraEntrega.altaTema("Objetos");
+				ServiciosPrimeraEntrega.altaTema("Agentes");
+				ServiciosPrimeraEntrega.altaTema("Visualización");
+				ServiciosPrimeraEntrega.altaTema("Redes");
+				ServiciosPrimeraEntrega.altaTema("Metodologías");
 				//asigno conocimiento de temas a revisores
-				ServiciosPrimeraEntrega.asignarConocimiento(21, 1, emanager);
-				ServiciosPrimeraEntrega.asignarConocimiento(22, 1, emanager);
-				ServiciosPrimeraEntrega.asignarConocimiento(23, 1, emanager);
+				ServiciosPrimeraEntrega.asignarConocimiento(1, 1, emanager);
+				ServiciosPrimeraEntrega.asignarConocimiento(2, 1, emanager);
+				ServiciosPrimeraEntrega.asignarConocimiento(3, 1, emanager);
 				//se repite tema para verificar si es aceptado
-				ServiciosPrimeraEntrega.asignarConocimiento(21, 1, emanager);
-				ServiciosPrimeraEntrega.asignarConocimiento(24, 2, emanager);
-				ServiciosPrimeraEntrega.asignarConocimiento(25, 2, emanager);
-				ServiciosPrimeraEntrega.asignarConocimiento(26, 2, emanager);
-			    ServiciosPrimeraEntrega.asignarTemaAPaper(21, 11, emanager);
-			    ServiciosPrimeraEntrega.asignarTemaAPaper(22, 11, emanager);
-			    ServiciosPrimeraEntrega.asignarTemaAPaper(23, 11, emanager);
+				ServiciosPrimeraEntrega.asignarConocimiento(1, 1, emanager);
+				ServiciosPrimeraEntrega.asignarConocimiento(4, 2, emanager);
+				ServiciosPrimeraEntrega.asignarConocimiento(5, 2, emanager);
+				ServiciosPrimeraEntrega.asignarConocimiento(6, 2, emanager);
+			    ServiciosPrimeraEntrega.asignarTemaAPaper(1, 5, emanager);
+			    ServiciosPrimeraEntrega.asignarTemaAPaper(2, 5, emanager);
+			    ServiciosPrimeraEntrega.asignarTemaAPaper(3, 5, emanager);
 			    //asigno papers a usuarios autores
-				ServiciosPrimeraEntrega.asignarAutorAPaper(11, 1, emanager);		
-				ServiciosPrimeraEntrega.asignarAutorAPaper(12, 2, emanager);
+				ServiciosPrimeraEntrega.asignarAutorAPaper(1, 1, emanager);		
+				ServiciosPrimeraEntrega.asignarAutorAPaper(2, 2, emanager);
 				//asigno papers a usuarios revisores
 				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(0).getId(), ListaUsuarios.get(0).getId(), emanager);		
-//				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(0).getId(), ListaUsuarios.get(1).getId(), emanager);
+				System.err.println("***********************ACA***********************");
+				System.out.println("--------------------1----------------");
+				//				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(0).getId(), ListaUsuarios.get(1).getId(), emanager);
 //				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(1).getId(), ListaUsuarios.get(2).getId(), emanager);		
 //				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(1).getId(), ListaUsuarios.get(3).getId(), emanager);
 //				ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(2).getId(), ListaUsuarios.get(4).getId(), emanager);		
@@ -84,12 +86,14 @@ public class Main {
 				//busco usuarios por paper
 			//	ServiciosPrimeraEntrega.getAutoresPorPaper(12, emanager);
 				//busco datos completos del usuario
-				ServiciosPrimeraEntrega.getDatosUsuario(1, emanager);
+				ServiciosPrimeraEntrega.getDatosUsuario(1);
+				System.out.println("--------------------2----------------");
 				//busco posibles evaluadores por paper
-				ServiciosPrimeraEntrega.verificarPosiblesEvaluadores(11, emanager);
+				ServiciosPrimeraEntrega.verificarPosiblesEvaluadores(1, emanager);
+				System.out.println("--------------------3----------------");
 				//busco posibles papers por evaluador
 				ServiciosPrimeraEntrega.verificarPosiblesPapers(1, emanager);
-				
+				System.out.println("--------------------4----------------");
 			}					
 			catch (Exception e) {
 				e.printStackTrace();
