@@ -12,6 +12,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
@@ -25,7 +26,7 @@ public class Usuario implements Serializable {
 	   
 	private static final long serialVersionUID = -7400600344621735783L;
 	   @Id
-	   @GeneratedValue
+	   @GeneratedValue(strategy = GenerationType.IDENTITY)
 //	   @Column(name="idUsuario")
 	   private int idUsuario;
 	   @Column(nullable = false)

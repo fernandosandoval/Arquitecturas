@@ -15,7 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
+import com.tudai.tpespecial.entidades.Paper;
 import com.tudai.tpespecial.entidades.Usuario;
 
 public class UsuarioREST {
@@ -23,7 +23,17 @@ public class UsuarioREST {
 	public UsuarioREST() {
 		// TODO Auto-generated constructor stub
 	}
-	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response createUsuario(Usuario u) {
+		Usuario ur = UsuarioDAO.getInstance().persist(u);
+		if(ur != null) {
+			return Response.status(201).entity(u).build();
+		}else {
+			return Response.noContent().build();
+		}
+	}
 	
 	@DELETE
 	@Path("/{id}")

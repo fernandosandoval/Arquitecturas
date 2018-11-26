@@ -20,7 +20,7 @@ public class Revision implements Serializable {
 	
        private static final long serialVersionUID = -7617415053157533023L;
        @Id
-       @GeneratedValue(strategy = GenerationType.AUTO)
+       @GeneratedValue(strategy = GenerationType.IDENTITY)
        @Column
        private int idRevision;
 	   @Column(nullable = false)

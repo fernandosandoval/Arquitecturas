@@ -16,14 +16,15 @@ import com.tudai.tpespecial.servicios.*;
 
 public class ServiciosPrimeraEntrega {
 
-	  public static Usuario altaUsuario(String nombre, String lugarTrabajo, String titulo, int anoEgreso, Boolean esEvaluador, Boolean esAutor, Boolean esExperto, EntityManager emanager) {
+	  public static Usuario altaUsuario(String nombre, String lugarTrabajo, String titulo, int anoEgreso, Boolean esEvaluador, Boolean esAutor, Boolean esExperto) {
 	      UsuarioDAO u = new UsuarioDAO();	
 	      Usuario usuario = new Usuario(nombre, lugarTrabajo, titulo, anoEgreso, esEvaluador, esAutor, esExperto);
 	      u.persist(usuario);
 	      return usuario;
 	  }
 	  
-	  public static void asignarConocimiento(int idTema, int idUsuario, EntityManager emanager) {
+	  public static void asignarConocimiento(int idTema, int idUsuario) {
+		  EntityManager emanager = EMF.createEntityManager();
 		  emanager.getTransaction().begin();
 		  Usuario usuario = emanager.find(Usuario.class, idUsuario);
 	      Tema tema = emanager.find(Tema.class, idTema);
@@ -65,26 +66,22 @@ public class ServiciosPrimeraEntrega {
 		  
 	  }
 	             
-      public static Paper altaPaper(String categoria, EntityManager emanager) {  
-	  
-	      emanager.getTransaction().begin();	
-	      Paper paper = new Paper(); 
+      public static Paper altaPaper(String categoria) {  
+    	  Paper paper = new Paper(); 
 	      paper.setCategoría(categoria);
-	      emanager.persist(paper);
-	      emanager.getTransaction().commit();
+	      PaperDAO paperDAO = new PaperDAO();
+	      paperDAO.persist(paper);
 	      return paper;
 	  }
       
-      public static void bajaPaper (int idPaper, EntityManager emanager) {
-		  Paper paper = emanager.find(Paper.class, idPaper);
-	      if (paper!= null) {
-	    	  emanager.getTransaction().begin();
-	    	  emanager.remove(paper);
-	    	  emanager.getTransaction().commit();
-	      }
+      public static void bajaPaper (int idPaper) {
+		  PaperDAO pd = new PaperDAO();
+		  pd.delete(idPaper);
+	      
 	  }
       
-      public static void asignarTemaAPaper(int idTema, int idPaper, EntityManager emanager) {
+      public static void asignarTemaAPaper(int idTema, int idPaper) {
+    	  EntityManager emanager = EMF.createEntityManager();
 		  emanager.getTransaction().begin();
 		  Paper paper = emanager.find(Paper.class, idPaper);
 	      Tema tema = emanager.find(Tema.class, idTema);
@@ -100,37 +97,32 @@ public class ServiciosPrimeraEntrega {
 	  }
 	  
 	  
-	  private static Revision altaRevision(String texto, Calendar fecha, Paper paper, EntityManager emanager) {
-	    //  emanager.getTransaction().begin();	
+	  private static Revision altaRevision(String texto, Calendar fecha, Paper paper) {
+		  RevisionDAO rd = new RevisionDAO();
 	      Revision revision = new Revision(texto, fecha); 
 	      paper.getRevisiones().add(revision);
-	      emanager.persist(revision);
-	    //  emanager.getTransaction().commit();
+	      rd.persist(revision);
+	   
 	      return revision;
 	  }
 	  
-	  public static void bajaRevision (int idRevision, EntityManager emanager) {
-		  Revision revision = emanager.find(Revision.class, idRevision);
-	      if (revision!= null) {
-	    	  emanager.getTransaction().begin();
-	    	  emanager.remove(revision);
-	    	  emanager.getTransaction().commit();
-	      }
+	  public static void bajaRevision (int idRevision) {
+		 RevisionDAO rd = new RevisionDAO();
+		 rd.delete(idRevision);
 	  }
 	  
 	  public static Tema altaTema (String texto) {  
-		  EntityManager emanager = EMF.createEntityManager();
-	      emanager.getTransaction().begin();	
 	      Tema tema = new Tema(); 
 	      tema.setTexto(texto);
-	      emanager.persist(tema);
-	      emanager.getTransaction().commit();
-	      emanager.close();
+	      TemaDAO td = new TemaDAO();
+	      td.persist(tema);
 	      return tema;
 	  }
+	  
       
 	  
-	  public static void asignarAutorAPaper(int idPaper, int idUsuario, EntityManager emanager) {
+	  public static void asignarAutorAPaper(int idPaper, int idUsuario) {
+		  EntityManager emanager = EMF.createEntityManager();
 		  emanager.getTransaction().begin();
 		  Usuario usuario = emanager.find(Usuario.class, idUsuario);
 		  Paper paper = emanager.find(Paper.class, idPaper);
@@ -144,8 +136,8 @@ public class ServiciosPrimeraEntrega {
 	      
 	  }
 	  
-	  public static boolean asignarPaperARevisor(int idPaper, int idUsuario, EntityManager emanager) {
-		  	
+	  public static boolean asignarPaperARevisor(int idPaper, int idUsuario) {
+		  	EntityManager emanager = EMF.createEntityManager();
 		    emanager.getTransaction().begin();
 		    boolean encontrado = false;
 		  	Usuario usuario = emanager.find(Usuario.class, idUsuario);
@@ -195,8 +187,9 @@ public class ServiciosPrimeraEntrega {
 	    	  return true;
 	  }
 	  
-	  public static void verificarPosiblesEvaluadores(int idPaper, EntityManager emanager) {
-		      boolean valido = false;
+	  public static void verificarPosiblesEvaluadores(int idPaper) {
+		  EntityManager emanager = EMF.createEntityManager();
+		  		boolean valido = false;
 		      List <Usuario> resultado = new ArrayList<>();
 		      Paper paper = emanager.find(Paper.class, idPaper);
 		      List<Tema> conoce = new ArrayList<>();
@@ -248,8 +241,9 @@ public class ServiciosPrimeraEntrega {
 		  }
 	  }
 
-	  public static void verificarPosiblesPapers(int idUsuario, EntityManager emanager) {
-	      boolean valido = false;
+	  public static void verificarPosiblesPapers(int idUsuario) {
+		  EntityManager emanager = EMF.createEntityManager();
+		  boolean valido = false;
 	      List <Paper> resultado = new ArrayList<>();
 	      Usuario usuario = emanager.find(Usuario.class, idUsuario);
 	      List<Tema> conoce = usuario.getTemasConocidos();
@@ -309,7 +303,8 @@ public class ServiciosPrimeraEntrega {
 	      }	  
   }
 	    	  
-	  public static void getAutoresPorPaper(int idPaper, EntityManager emanager) {
+	  public static void getAutoresPorPaper(int idPaper) {
+		  EntityManager emanager = EMF.createEntityManager();
 		  List<Usuario> res = new ArrayList<>();
 		  res = OtrosServicios.buscarTodosLosUsuariosPorPaper(idPaper, emanager);
 		  if (res.size() == 0) {
@@ -323,14 +318,16 @@ public class ServiciosPrimeraEntrega {
 		  }
 	  }
 	  
-	  public static List<Paper> getTrabajosPorEvaluador (int idUsuario, EntityManager emanager){
+	  public static List<Paper> getTrabajosPorEvaluador (int idUsuario){
+		  EntityManager emanager = EMF.createEntityManager();
 		  Usuario usuario = emanager.find(Usuario.class, idUsuario);
 		  List<Paper> res = new ArrayList<>();
 		  res = usuario.getTrabajosAsignados();
 		  return res;
 	  }
 	  
-	  public static List<Paper> getTrabajosPorAutor (int idUsuario, EntityManager emanager){
+	  public static List<Paper> getTrabajosPorAutor (int idUsuario){
+		  EntityManager emanager = EMF.createEntityManager();
 		  Usuario usuario = emanager.find(Usuario.class, idUsuario);
 		  List<Paper> res = new ArrayList<>();
 		  res = usuario.getPapers();
@@ -357,7 +354,8 @@ public class ServiciosPrimeraEntrega {
 		  }
 	  }
 	  
-	  public static void getTipoEvaluador(int idUsuario, EntityManager emanager) {
+	  public static void getTipoEvaluador(int idUsuario) {
+		  EntityManager emanager = EMF.createEntityManager();
 		  Usuario res = new Usuario();
 		  res = OtrosServicios.getUsuarioPorId(idUsuario, emanager);
 		  if(res.isEsAutor()) {
@@ -371,7 +369,8 @@ public class ServiciosPrimeraEntrega {
 		  }
 	  }
 	  
-	  public static void obtenerRevisionesPorRevisor(int idUsuario, EntityManager emanager) {
+	  public static void obtenerRevisionesPorRevisor(int idUsuario) {
+		  EntityManager emanager = EMF.createEntityManager();
 		  List<Revision> res = new ArrayList<>();
 		  res = OtrosServicios.getRevisionesPorRevisor(idUsuario, emanager);
 	      System.out.println("Las revisiones del revisor "+idUsuario+" son:");
@@ -380,7 +379,8 @@ public class ServiciosPrimeraEntrega {
 	      }
 	  }
 	  
-	  public static void obtenerTrabajosAsignadosPorRevisor(int idUsuario, EntityManager emanager) {
+	  public static void obtenerTrabajosAsignadosPorRevisor(int idUsuario) {
+		  EntityManager emanager = EMF.createEntityManager();
 		  List<Revision> res = new ArrayList<>();
 		  res = OtrosServicios.getTrabajosAsignadosPorRevisor(idUsuario, emanager);
 	      System.out.println("Los trabajos asignados al revisor "+idUsuario+" son:");
@@ -389,8 +389,9 @@ public class ServiciosPrimeraEntrega {
 	      }
 	  }
 	  
-	  public static void getRevisionesPorRevisoryFecha(int idUsuario, Date fechaInicio, Date fechaFin, EntityManager emanager) {
+	  public static void getRevisionesPorRevisoryFecha(int idUsuario, Date fechaInicio, Date fechaFin) {
 		  List<Revision> res = new ArrayList<>();
+		  EntityManager emanager = EMF.createEntityManager();
 		  res = OtrosServicios.buscarTodosLasRevisionesPorRevisorYFecha(idUsuario, fechaInicio, fechaFin, emanager);
           System.out.println("Las revisiones del revisor "+idUsuario+" entre "+fechaInicio+ " y "+fechaFin+" son:");	  
 	      for (Revision r : res ) {

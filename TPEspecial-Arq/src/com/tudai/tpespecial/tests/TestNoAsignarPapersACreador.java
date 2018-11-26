@@ -37,36 +37,36 @@ public class TestNoAsignarPapersACreador extends TestCase {
 			emf = Persistence.createEntityManagerFactory("TPEspecial-Arquitectura");
 			emanager = emf.createEntityManager();            		
 			
-			ListaUsuarios.add(ServiciosPrimeraEntrega.altaUsuario("Juan Perez", "Instituto 1", "AAA", 1999, false, true, false, emanager));
-			ListaUsuarios.add(ServiciosPrimeraEntrega.altaUsuario("Jose Lopez", "Instituto 2", "BBB", 2005, true, false, false, emanager));
-			ListaUsuarios.add(ServiciosPrimeraEntrega.altaUsuario("Mario Gonzalez", "Instituto 3", "CCC", 2005, true, false, false, emanager));
-			ListaUsuarios.add(ServiciosPrimeraEntrega.altaUsuario("Raul Estevez", "Instituto 1", "AAA", 1999, false, true, true, emanager));
-			ListaUsuarios.add(ServiciosPrimeraEntrega.altaUsuario("Jose Lopez", "Instituto 4", "BBB", 2005, true, false, true, emanager));
-			ListaUsuarios.add(ServiciosPrimeraEntrega.altaUsuario("Luis Ramirez", "Instituto 5", "CCC", 2005, true, true, false, emanager));
-			ListaUsuarios.add(ServiciosPrimeraEntrega.altaUsuario("Carlos Sanchez", "Instituto 3", "AAA", 1999, false, true, true, emanager));
-			ListaUsuarios.add(ServiciosPrimeraEntrega.altaUsuario("Pablo Gutierrez", "Instituto 2", "BBB", 2005, true, false, false, emanager));
-			ListaUsuarios.add(ServiciosPrimeraEntrega.altaUsuario("Ariel Gomez", "Instituto 4", "CCC", 2005, true, true, true, emanager));
-			ListaUsuarios.add(ServiciosPrimeraEntrega.altaUsuario("Juan Martinez", "Instituto 1", "AAA", 1999, false, true, true, emanager));
+			ListaUsuarios.add(ServiciosPrimeraEntrega.altaUsuario("Juan Perez", "Instituto 1", "AAA", 1999, false, true, false));
+			ListaUsuarios.add(ServiciosPrimeraEntrega.altaUsuario("Jose Lopez", "Instituto 2", "BBB", 2005, true, false, false));
+			ListaUsuarios.add(ServiciosPrimeraEntrega.altaUsuario("Mario Gonzalez", "Instituto 3", "CCC", 2005, true, false, false));
+			ListaUsuarios.add(ServiciosPrimeraEntrega.altaUsuario("Raul Estevez", "Instituto 1", "AAA", 1999, false, true, true));
+			ListaUsuarios.add(ServiciosPrimeraEntrega.altaUsuario("Jose Lopez", "Instituto 4", "BBB", 2005, true, false, true));
+			ListaUsuarios.add(ServiciosPrimeraEntrega.altaUsuario("Luis Ramirez", "Instituto 5", "CCC", 2005, true, true, false));
+			ListaUsuarios.add(ServiciosPrimeraEntrega.altaUsuario("Carlos Sanchez", "Instituto 3", "AAA", 1999, false, true, true));
+			ListaUsuarios.add(ServiciosPrimeraEntrega.altaUsuario("Pablo Gutierrez", "Instituto 2", "BBB", 2005, true, false, false));
+			ListaUsuarios.add(ServiciosPrimeraEntrega.altaUsuario("Ariel Gomez", "Instituto 4", "CCC", 2005, true, true, true));
+			ListaUsuarios.add(ServiciosPrimeraEntrega.altaUsuario("Juan Martinez", "Instituto 1", "AAA", 1999, false, true, true));
 			ArrayList<Paper> ListaPapers = new ArrayList<Paper>();
-			ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Articulo", emanager));
-			ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Resumen", emanager));
-			ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Poster", emanager));
-			ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Articulo", emanager));
-			ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Resumen", emanager));
-			ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Poster", emanager));
-			ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Articulo", emanager));
-			ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Resumen", emanager));
-			ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Poster", emanager));
-			ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Articulo", emanager));
-			ServiciosPrimeraEntrega.asignarAutorAPaper(ListaPapers.get(0).getId(), ListaUsuarios.get(0).getId(), emanager);		
-			ServiciosPrimeraEntrega.asignarAutorAPaper(ListaPapers.get(0).getId(), ListaUsuarios.get(1).getId(), emanager);
-			ServiciosPrimeraEntrega.asignarAutorAPaper(ListaPapers.get(1).getId(), ListaUsuarios.get(2).getId(), emanager);		
-			ServiciosPrimeraEntrega.asignarAutorAPaper(ListaPapers.get(1).getId(), ListaUsuarios.get(3).getId(), emanager);
-			ServiciosPrimeraEntrega.asignarAutorAPaper(ListaPapers.get(2).getId(), ListaUsuarios.get(4).getId(), emanager);		
-			ServiciosPrimeraEntrega.asignarAutorAPaper(ListaPapers.get(2).getId(), ListaUsuarios.get(5).getId(), emanager);
+			ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Articulo"));
+			ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Resumen"));
+			ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Poster"));
+			ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Articulo"));
+			ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Resumen"));
+			ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Poster"));
+			ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Articulo"));
+			ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Resumen"));
+			ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Poster"));
+			ListaPapers.add(ServiciosPrimeraEntrega.altaPaper("Articulo"));
+			ServiciosPrimeraEntrega.asignarAutorAPaper(ListaPapers.get(0).getId(), ListaUsuarios.get(0).getId());		
+			ServiciosPrimeraEntrega.asignarAutorAPaper(ListaPapers.get(0).getId(), ListaUsuarios.get(1).getId());
+			ServiciosPrimeraEntrega.asignarAutorAPaper(ListaPapers.get(1).getId(), ListaUsuarios.get(2).getId());		
+			ServiciosPrimeraEntrega.asignarAutorAPaper(ListaPapers.get(1).getId(), ListaUsuarios.get(3).getId());
+			ServiciosPrimeraEntrega.asignarAutorAPaper(ListaPapers.get(2).getId(), ListaUsuarios.get(4).getId());		
+			ServiciosPrimeraEntrega.asignarAutorAPaper(ListaPapers.get(2).getId(), ListaUsuarios.get(5).getId());
 	
 
-			assertTrue(ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(0).getId(), ListaUsuarios.get(0).getId(),emanager)); 
+			assertTrue(ServiciosPrimeraEntrega.asignarPaperARevisor(ListaPapers.get(0).getId(), ListaUsuarios.get(0).getId())); 
 		
     
 
