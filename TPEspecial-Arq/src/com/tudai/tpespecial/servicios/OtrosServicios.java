@@ -25,8 +25,8 @@ public class OtrosServicios {
 	}
 	
 	public static List<Usuario> buscarTodosLosUsuariosPorPaper(int idPaper, EntityManager emanager){
-          String sql = "SELECT * from tabla_papers_tabla_usuarios t JOIN tabla_usuarios u on t.usuarios_idUsuario = u.idUsuario WHERE t.papers_idPaper = ?1";   
-          Query query = emanager.createNativeQuery(sql, Usuario.class);  
+          String jpql = "SELECT t from tabla_papers_tabla_usuarios t JOIN tabla_usuarios u on t.usuarios_idUsuario = u.idUsuario WHERE t.papers_idPaper = ?1";   
+          Query query = emanager.createQuery(jpql);  
           query.setParameter("1", idPaper);
           List<Usuario> resultados = query.getResultList();
           return resultados;

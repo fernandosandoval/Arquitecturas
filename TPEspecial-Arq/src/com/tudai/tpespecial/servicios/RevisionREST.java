@@ -4,6 +4,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -12,12 +13,14 @@ import javax.ws.rs.core.Response;
 
 import com.tudai.tpespecial.entidades.Paper;
 import com.tudai.tpespecial.entidades.Revision;
+import com.tudai.tpespecial.entidades.Usuario;
 
 public class RevisionREST {
 
 	public RevisionREST() {
 		// TODO Auto-generated constructor stub
 	}
+	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -29,6 +32,7 @@ public class RevisionREST {
 			return Response.noContent().build();
 		}
 	}
+	
 	@DELETE
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -40,6 +44,7 @@ public class RevisionREST {
 
 		return Response.notModified().build();
 	}
+	
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -51,4 +56,19 @@ public class RevisionREST {
 		else
 			return null;
 	}
+	
+	@PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public static Response updateRevision(@PathParam("id") Integer id, Revision revision) {
+    	Revision rr = RevisionDAO.getInstance().update(id, revision);
+	    if (rr == null) {
+	    	return Response.notModified().build();	
+	    }
+	    else {
+	    	return Response.status(201).build();
+	    }
+    }
+	
 }

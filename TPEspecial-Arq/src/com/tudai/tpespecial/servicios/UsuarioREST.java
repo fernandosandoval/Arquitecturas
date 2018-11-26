@@ -23,6 +23,7 @@ public class UsuarioREST {
 	public UsuarioREST() {
 		// TODO Auto-generated constructor stub
 	}
+	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -46,6 +47,7 @@ public class UsuarioREST {
 
 		return Response.notModified().build();
 	}
+	
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -57,5 +59,41 @@ public class UsuarioREST {
 		else
 			return null;
 	}
-
-}
+	
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public static Response updateUsuario(@PathParam("id") Integer id, Usuario usuario) {
+    	Usuario ur = UsuarioDAO.getInstance().update(id, usuario);
+	    if (ur == null) {
+	    	return Response.notModified().build();	
+	    }
+	    else {
+	    	return Response.status(201).build();
+	    }
+    }
+    
+    @PUT
+    @Path("/assignPaper/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public static Response assignPaper(@PathParam("id") Integer idUsuario, Usuario usuario, Integer idPaper, Paper paper) {
+    	Usuario ur = UsuarioDAO.getInstance().findById(idUsuario);
+	    if (ur == null) {
+	    	return Response.notModified().build();	
+	    }
+	    else {
+	    	ur.addTrabajoAsignado(paper);
+	    	boolean b = UsuarioDAO.getInstance().assignUserToPaper(idUsuario, idPaper);
+	    	if(b == true) {
+	    		return Response.status(201).build();
+	    		}
+	    	else {
+	    		return Response.notModified().build();	
+	    		}
+	    }
+    }
+    
+    
+}    

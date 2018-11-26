@@ -164,6 +164,10 @@ public class Usuario implements Serializable {
 	public List<Tema> getTemasConocidos() {
 		return temasConocidos;
 	}
+	
+	public List<Revision> getRevisiones() {
+		return revisiones;
+	}
 
 
 	public boolean addTemaConocido(Tema tema) {
@@ -194,6 +198,8 @@ public class Usuario implements Serializable {
 	public void setEsExperto(boolean esExperto) {
 		this.esExperto = esExperto;
 	}
+	
+	
 
 
 	public static long getSerialversionuid() {

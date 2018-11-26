@@ -71,5 +71,7 @@ public class PaperDAO implements DAO<Paper, Integer>{
 		}
 		return true;
 	}
+	
+	
 
 }
